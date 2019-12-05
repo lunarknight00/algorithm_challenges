@@ -1,4 +1,5 @@
 """
+
 Longest common substring
 
 algo from wikipedia
@@ -26,6 +27,11 @@ function LCSubstr(S[1..r], T[1..n])
 
 """
 
+def display_grid(grid):
+    for i in range(len(grid)):
+        print('   ', ' '.join(grid[i][j] if len(grid[i][j]) > 0 else "X" for j in range(len(grid))))
+
+
 def longestCommonSubsequence(self, text1, text2):
     """Challenge solved on leetcode
     :type text1: str
@@ -47,41 +53,35 @@ def longestCommonSubsequence(self, text1, text2):
 
 
 def LCSubstr(s,t):
-    """
-    >>> LCSubstr("ABABC","BABCA")
-    BAB
+    # """
+    # >>> LCSubstr("ABABC","BABCA")
+    # BAB
 
-    >>> LCSubstr("ABCBA","BABCA")
-    ABC
+    # >>> LCSubstr("ABCBA","BABCA")
+    # ABC
 
-    """
-    r = len(s)
-    n = len(t)
-    L = [[0 for _ in range(n+1)] for _ in range(r+1)]
-    z =  0
-    ret = set()
-    for i in range(0,r):
-        for j in range(0,n):
+    # """
+    n = len(s)
+    m = len(t)
+    dp = [["" for _ in range(m+1)] for _ in range(n+1)]
+    for i in range(n):
+        for j in range(m):
             if s[i] == t[j]:
-                # if i == 0 or j == 0:
-                #     L[i+1][j+1] = 1
-                # else:
-                L[i+1][j+1] = L[i][j] + 1
-                if L[i+1][j+1] > z:
-                    z = L[i+1][j+1]
-                    print(s[i-z +1:z])
-                    ret.add(s[i-z+1:z])
-                elif L[i+1][j+1] == z:
-                    ret.add(s[i-z+1:z])
-                    print(s[i-z +1:z])
+                dp[i+1][j +1] = dp[i][j] + s[i]
             else:
-                L[i][j] = 0
-    print(ret)
-    print(z)
+                dp[i+1][j +1] = max(dp[i+1][j],dp[i][j+1],key = lambda x:len(x))
+            display_grid(dp)
+            print(s[i],end = "\t")
+            print(t[j])
+            print(f" i,j is ({i},{j})")
+            print(f"i+1,j+1 is ({i+1},{j+1})")
+            print("---------------------------------------")
 
-    # for i in range(0,r):
-    #     for j in range(0,n):
-    #         print(L[i][j])
+    return dp[n][m]
+
+
+
+
     return 
 
 
@@ -89,3 +89,4 @@ def LCSubstr(s,t):
 if __name__ == "__main__":
     import doctest
     doctest.testmod()
+    LCSubstr("abb","bba")
