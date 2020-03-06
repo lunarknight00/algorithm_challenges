@@ -14,14 +14,17 @@ def numSquares(n:int)-> int:
     >>> numSquares(13)
     2
     """
-    if  <= 0:
+    if n <= 0:
         return 0 if n == 0 else -1
-    dp = [math.inf for i in range(n+1)]
+    dp = [0 for i in range(n+1)]
     for i in range(1,n+1):
+        dp[i] = math.inf 
         for j in range(1,i):
             if j*j > i:
                 break
             dp[i] = min(dp[i],1+dp[i-j*j])
+    # for i in dp:
+        # print(i)
     return dp[n]
 
         # if (n <= 0)
