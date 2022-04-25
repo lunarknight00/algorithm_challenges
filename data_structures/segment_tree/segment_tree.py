@@ -8,7 +8,16 @@ class SegmentTree:
     39
     >>> tree.getSum(0,2,0,4,1)
     33
+    >>> tree.query(0,6,0,4,1)
+    False
+    >>> tree.query(0,2,0,4,1)
+    True    
     """    
+    def __init__(self,data):
+        self.data = data
+        self.array = {}
+        self.change = {}
+    
     def build(self, left, right, pivot):
         if left == right:
             # print(left)
@@ -67,7 +76,19 @@ class SegmentTree:
             self.update(uleft,uright,start, mid, pivot*2)
         if mid < uright:
             self.update(uleft,uright,mid + 1, end, (pivot * 2) + 1)
-        return sum
+    
+    def query(self, qleft, qright, start, end, pivot):
+        """Check if query range in the tree range."""
+        if qleft <= start and qright >= end:
+            return False
+        elif qright < start or qleft > end:
+            return False
+        mid = start  + (end - start) // 2
+        leftTree = self.query(qleft,qright,start, mid, pivot*2)
+        rightTree = self.query(qleft,qright,mid + 1, end, (pivot * 2) + 1)
+        return leftTree and rightTree
+
+
 
 if __name__ == "__main__":
     from doctest import testmod
